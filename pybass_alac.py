@@ -3,7 +3,7 @@
 
 __version__ = '0.1'
 __versionTime__ = '2013-03-28'
-__author__ = 'Andrew Evans <leapingidiots@gmail.com>'
+__author__ = 'Andrew Evans <themindflows@gmail.com>'
 __doc__ = '''
 pybass_alac.py - is ctypes python module for
 BASS_ALAC - extension to the BASS audio library that enables
