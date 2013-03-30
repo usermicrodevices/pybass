@@ -1,11 +1,10 @@
-# Copyright(c) Max Kolosov 2009-2011 maxkolosov@inbox.ru
-# http://vosolok2008.narod.ru
+# Copyright(c) Maxim Kolosov 2009-2013 pyirrlicht@gmail.com
+# http://pybass.sf.net
 # BSD license
-# many thanks Dr. Bill as main tester and bugs finder
 
-__version__ = '0.5.3'
-__versionTime__ = '2013-01-22'
-__author__ = 'Max Kolosov <maxkolosov@inbox.ru>'
+__version__ = '0.5.4'
+__versionTime__ = '2013-03-30'
+__author__ = 'Maxim Kolosov <pyirrlicht@gmail.com>'
 __doc__ = '''
 pybass.py - is ctypes python module for BASS (http://www.un4seen.com).
 
@@ -1142,8 +1141,11 @@ def play_handle(handle, show_tags = True):
 			except:
 				print('============== tags module not accessible ==============')
 				print('============== BASS_ChannelGetTags return ==============')
-				for tag in get_tags(handle):
-					print(string_for_print(tag))
+				try:
+					for tag in get_tags(handle):
+						print(string_for_print(tag))
+				except:
+					print('error with get_tags(handle) function')
 				#~ for key, value in get_tags_as_list(handle):
 					#~ print key, '::', value
 				#~ result_as_dict = dict(get_tags_as_list(handle))
