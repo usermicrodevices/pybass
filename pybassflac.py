@@ -1,10 +1,10 @@
-# Copyright(c) Max Kolosov 2009 maxkolosov@inbox.ru
-# http://vosolok2008.narod.ru
+# Copyright(c) Maxim Kolosov 2009-2013 pyirrlicht@gmail.com
+# http://pybass.sf.net
 # BSD license
 
 __version__ = '0.2'
-__versionTime__ = '2013-01-22'
-__author__ = 'Max Kolosov <maxkolosov@inbox.ru>'
+__versionTime__ = '2013-03-31'
+__author__ = 'Maxim Kolosov <pyirrlicht@gmail.com>'
 __doc__ = '''
 pybassflac.py - is ctypes python module for
 BASSFLAC - extension to the BASS audio library,
@@ -19,10 +19,11 @@ DOWNLOADPROC = pybass.DOWNLOADPROC
 BASS_FILEPROCS = pybass.BASS_FILEPROCS
 
 if platform.system().lower() == 'windows':
-	bassflac_module = ctypes.WinDLL('bassflac')
+	bassflac_module = ctypes.WinDLL('bass_flac.dll')
 	func_type = ctypes.WINFUNCTYPE
 else:
-	bassflac_module = ctypes.CDLL('bassflac')
+	# correct by Wasylews (sabov.97@mail.ru), thank him
+	bassflac_module = ctypes.CDLL('./libbassflac.so', mode=ctypes.RTLD_GLOBAL)
 	func_type = ctypes.CFUNCTYPE
 
 
@@ -41,9 +42,9 @@ BASS_FLAC_StreamCreateFileUser = func_type(HSTREAM, ctypes.c_ulong, ctypes.c_ulo
 
 if __name__ == "__main__":
 	if not pybass.BASS_Init(-1, 44100, 0, 0, 0):
-		print('BASS_Init error %s' % pybass.get_error_description(pybass.BASS_ErrorGetCode()))
+		print ('BASS_Init error', pybass.get_error_description(pybass.BASS_ErrorGetCode()))
 	else:
 		handle = BASS_FLAC_StreamCreateFile(False, b'test.flac', 0, 0, 0)
-		pybass.play_handle(handle)
+		pybass.play_handle(handle, False)
 		if not pybass.BASS_Free():
-			print('BASS_Free error %s' % pybass.get_error_description(pybass.BASS_ErrorGetCode()))
+			print ('BASS_Free error', pybass.get_error_description(pybass.BASS_ErrorGetCode()))

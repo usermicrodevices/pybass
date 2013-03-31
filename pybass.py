@@ -59,7 +59,8 @@ if platform.system().lower() == 'windows':
 	bass_module = ctypes.WinDLL('bass')
 	func_type = ctypes.WINFUNCTYPE
 else:
-	bass_module = ctypes.CDLL('bass')
+	# correct by Wasylews (sabov.97@mail.ru), thank him
+	bass_module = ctypes.CDLL('./libbass.so', mode=ctypes.RTLD_GLOBAL)
 	func_type = ctypes.CFUNCTYPE
 
 QWORD = ctypes.c_int64
@@ -1185,42 +1186,46 @@ def play_handle(handle, show_tags = True):
 		if not BASS_StreamFree(handle):
 			print('BASS_StreamFree error %s' % get_error_description(BASS_ErrorGetCode()))
 
+@SYNCPROC
+def callback(handle, buffer, length, user):
+    print("end.")
+
 if __name__ == "__main__":
-	print('BASS implemented Version %s' % BASSVERSIONTEXT)
-	print('BASS real Version %X' % BASS_GetVersion())
-	if not BASS_Init(-1, 44100, 0, 0, 0):
-		print('BASS_Init error %s' % get_error_description(BASS_ErrorGetCode()))
-	else:
-		print('============== BASS Information ==============')
-		bi = BASS_INFO()
-		if not BASS_GetInfo(bi):
-			print('BASS_GetInfo error %s' % get_error_description(BASS_ErrorGetCode()))
-		else:
-			print('device capabilities (DSCAPS_xxx flags) = %d' % bi.flags)
-			print('size of total device hardware memory = %d' % bi.hwsize)
-			print('size of free device hardware memory = %d' % bi.hwfree)
-			print('number of free sample slots in the hardware = %d' % bi.freesam)
-			print('number of free 3D sample slots in the hardware = %d' % bi.free3d)
-			print('min sample rate supported by the hardware = %d' % bi.minrate)
-			print('max sample rate supported by the hardware = %d' % bi.maxrate)
-			print('device supports EAX? (always FALSE if BASS_DEVICE_3D was not used) = %d' % bool(bi.eax))
-			print('recommended minimum buffer length in ms (requires BASS_DEVICE_LATENCY) = %d' % bi.minbuf)
-			print('DirectSound version = %d' % bi.dsver)
-			print('delay (in ms) before start of playback (requires BASS_DEVICE_LATENCY) = %d' % bi.latency)
-			print('BASS_Init "flags" parameter = %d' % bi.initflags)
-			print('number of speakers available = %d' % bi.speakers)
-			print('current output rate (Vista/OSX only) = %d' % bi.freq)
-		print('============== volume ==============')
-		print('volume = %d' % BASS_GetVolume())
-		print('============== Device Information ==============')
-		bd = BASS_DEVICEINFO()
-		if not BASS_GetDeviceInfo(BASS_GetDevice(), bd):
-			print('BASS_GetDeviceInfo error %s' % get_error_description(BASS_ErrorGetCode()))
-		else:
-			print('description = %s' % bd.name)
-			print('driver = %s' % bd.driver)
-			print('flags = %s' % bd.flags)
-		handle = BASS_StreamCreateFile(False, b'test.ogg', 0, 0, 0)
-		play_handle(handle)
-		if not BASS_Free():
-			print('BASS_Free error %s' % get_error_description(BASS_ErrorGetCode()))
+    print('BASS implemented Version %s' % BASSVERSIONTEXT)
+    print('BASS real Version %X' % BASS_GetVersion())
+    if not BASS_Init(-1, 44100, 0, 0, 0):
+        print('BASS_Init error %s' % get_error_description(BASS_ErrorGetCode()))
+    else:
+        print('============== BASS Information ==============')
+        bi = BASS_INFO()
+        if not BASS_GetInfo(bi):
+            print('BASS_GetInfo error %s' % get_error_description(BASS_ErrorGetCode()))
+        else:
+            print('device capabilities (DSCAPS_xxx flags) = %d' % bi.flags)
+            print('size of total device hardware memory = %d' % bi.hwsize)
+            print('number of free sample slots in the hardware = %d' % bi.freesam)
+            print('number of free 3D sample slots in the hardware = %d' % bi.free3d)
+            print('min sample rate supported by the hardware = %d' % bi.minrate)
+            print('max sample rate supported by the hardware = %d' % bi.maxrate)
+            print('device supports EAX? (always FALSE if BASS_DEVICE_3D was not used) = %d' % bool(bi.eax))
+            print('recommended minimum buffer length in ms (requires BASS_DEVICE_LATENCY) = %d' % bi.minbuf)
+            print('DirectSound version = %d' % bi.dsver)
+            print('delay (in ms) before start of playback (requires BASS_DEVICE_LATENCY) = %d' % bi.latency)
+            print('BASS_Init "flags" parameter = %d' % bi.initflags)
+            print('number of speakers available = %d' % bi.speakers)
+            print('current output rate (Vista/OSX only) = %d' % bi.freq)
+        print('============== volume ==============')
+        print('volume = %d' % BASS_GetVolume())
+        print('============== Device Information ==============')
+        bd = BASS_DEVICEINFO()
+        if not BASS_GetDeviceInfo(BASS_GetDevice(), bd):
+            print('BASS_GetDeviceInfo error %s' % get_error_description(BASS_ErrorGetCode()))
+        else:
+            print('description = %s' % bd.name)
+            print('driver = %s' % bd.driver)
+            print('flags = %s' % bd.flags)
+        handle = BASS_StreamCreateFile(False, b'test.wav', 0, 0, 0)
+        BASS_ChannelSetSync(handle, BASS_SYNC_END, 0, callback, 0)
+        play_handle(handle, False)
+        if not BASS_Free():
+            print('BASS_Free error %s' % get_error_description(BASS_ErrorGetCode()))
