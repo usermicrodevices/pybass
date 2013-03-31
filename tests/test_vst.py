@@ -1,5 +1,4 @@
-# Copyright(c) Andrew Evans 2013
-# BSD license
+# Copyright(c) Andrew Evans 2013 (themindflows@gmail.com)
 
 from pybass import *
 from pybass_vst import *
@@ -17,13 +16,13 @@ if not BASS_Init(-1, 44100, 0, 0, 0):
 else:
 	vst_load = BASS_PluginLoad('bass_vst.dll', 0)
 	dsp = BASS_VST_ChannelCreate(44100, 1, "C:\\Program Files\\Native Instruments\\VSTPlugins 32 bit\\FM8.dll", 0)
-        info = BASS_VST_INFO()
-        if BASS_VST_GetInfo(dsp, ctypes.byref(info)) and info.hasEditor:
-            BASS_VST_EmbedEditor(dsp, hwnd)
-            
-        print info.hasEditor
+		info = BASS_VST_INFO()
+		if BASS_VST_GetInfo(dsp, ctypes.byref(info)) and info.hasEditor:
+			BASS_VST_EmbedEditor(dsp, hwnd)
 
-        
+		print info.hasEditor
+
+
 	#BASS_ChannelPlay(channelHandle, False)
 	#BASS_StreamFree(channelHandle)
 frame.pack()

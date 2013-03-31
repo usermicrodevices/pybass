@@ -3,7 +3,7 @@
 # BSD license
 
 __version__ = '0.5.4'
-__versionTime__ = '2013-03-30'
+__versionTime__ = '2013-03-31'
 __author__ = 'Maxim Kolosov <pyirrlicht@gmail.com>'
 __doc__ = '''
 pybass.py - is ctypes python module for BASS (http://www.un4seen.com).
@@ -574,7 +574,7 @@ BASS_SYNC_MIXTIME = 0x40000000
 BASS_SYNC_ONETIME = (-2147483648)
 
 #typedef void (CALLBACK SYNCPROC)(HSYNC handle, DWORD channel, DWORD data, void *user);
-SYNCPROC = func_type(ctypes.c_void_p, HSYNC, ctypes.c_ulong, ctypes.c_ulong, ctypes.c_void_p) 
+SYNCPROC = func_type(None, HSYNC, ctypes.c_ulong, ctypes.c_ulong, ctypes.c_void_p) 
 # Sync callback function. NOTE: a sync callback function should be very
 #quick as other syncs can't be processed until it has finished. If the sync
 #is a "mixtime" sync, then other streams and MOD musics can't be mixed until
