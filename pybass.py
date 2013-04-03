@@ -54,13 +54,24 @@ Main Features
 '''
 
 import sys, ctypes, platform
+from os import environ
+
+# corrections by Wasylews (sabov.97@mail.ru)
+# Get path to BASS from os.environ if it set
+# Else BASS in current folder
+
+if 'PATH_TO_BASS_LIBRARY' in environ:
+    PATH_TO_BASS_LIBRARY = environ['PATH_TO_BASS_LIBRARY']
+else:
+    PATH_TO_BASS_LIBRARY = "."
+
+print('PATH_TO_BASS_LIBRARY =', PATH_TO_BASS_LIBRARY)
 
 if platform.system().lower() == 'windows':
-	bass_module = ctypes.WinDLL('bass')
+	bass_module = ctypes.WinDLL(PATH_TO_BASS_LIBRARY + '/bass.dll', mode=ctypes.RTLD_GLOBAL)
 	func_type = ctypes.WINFUNCTYPE
 else:
-	# correct by Wasylews (sabov.97@mail.ru), thank him
-	bass_module = ctypes.CDLL('./libbass.so', mode=ctypes.RTLD_GLOBAL)
+	bass_module = ctypes.CDLL(PATH_TO_BASS_LIBRARY + '/libbass.so', mode=ctypes.RTLD_GLOBAL)
 	func_type = ctypes.CFUNCTYPE
 
 QWORD = ctypes.c_int64
