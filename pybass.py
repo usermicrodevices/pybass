@@ -765,7 +765,7 @@ class WAVEFORMATEX(ctypes.Structure):
 	('nBlockAlign', ctypes.c_long),
 	('wBitsPerSample', ctypes.c_long),
 	('cbSize', ctypes.c_long)]
-PWAVEFORMATEX, LPWAVEFORMATEX = POINTER(WAVEFORMATEX)
+PWAVEFORMATEX = LPWAVEFORMATEX = ctypes.POINTER(WAVEFORMATEX)
 
 # BASS_ChannelGetLength/GetPosition/SetPosition modes
 BASS_POS_BYTE = 0# byte position
