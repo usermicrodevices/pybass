@@ -2,8 +2,8 @@
 # http://pybass.sf.net
 # BSD license
 
-__version__ = '0.5.4'
-__versionTime__ = '2013-04-11'
+__version__ = '0.5.5'
+__versionTime__ = '2013-11-29'
 __author__ = 'Maxim Kolosov <pyirrlicht@gmail.com>'
 __doc__ = '''
 pybass.py - is ctypes python module for BASS (http://www.un4seen.com).

@@ -1,12 +1,12 @@
 Metadata-Version: 1.0
 Name: pybass
-Version: 0.5.4
-Summary: ctypes python module for BASS and wxPython player control for play stream or file
+Version: 0.5.5
+Summary: ctypes python module for BASS and wxPython(+Phoenix) player control for play stream or file
 Home-page: http://pybass.sf.net
 Author: Maxim Kolosov
 Author-email: pyirrlicht@gmail.com
 License: BSD
-Download-URL: http://sourceforge.net/projects/pybass/files
+Download-URL: http://pybass.sf.net
 Description: BASS is an audio library for use in Windows, Linux and MacOSX software. Its purpose is to provide the most powerful and efficient (yet easy to use), sample, stream, MOD music, recording functions and many plugins.
 Keywords: sound,music,sample,audio,stream,play,record,plugin,mp3,mp2,mp1,ogg,wav,aiff,mo3,it,xm,s3m,mtm,mod,umx
 Platform: ALL
